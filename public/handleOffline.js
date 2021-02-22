@@ -8,16 +8,42 @@ request.onupgradeneeded = function (event) {
     console.log("onupgradeneeded db: ", db);
     db.createObjectStore("pending", { autoIncrement: true });
 }
-
 // Check if browser is online initially
 request.onsuccess = function (event) {
     db = event.target.result;
+
+    // if online, check budgetIDDB for records
     if (navigator.onLine) {
+        checkIDDB();
         console.log("request.onsuccess => navigator.onLine: ", navigator.onLine)
     }
 }
 
-// Check IndexedDB for records and add to MongoDB if online
+// Check IndexedDB for records
+let checkIDDB = function () {
+
+    // Create a transaction, access the pending store and get all IDDB entries
+    const transaction = db.transaction("pending", "readwrite");
+    const store = transaction.objectStore("pending");
+    const allTransactions = store.getAll();
+
+    console.log("checkIDDB => transaction: ", transaction)
+    console.log("checkIDDB => store: ", store)
+
+    // Wait until transaction request is complete
+    allTransactions.onsuccess = function () {
+        console.log("checkIDDB => allTransactions: ", allTransactions)
+
+        // If there are records, post to budget MongoDB
+        
+
+    }
+}
+
+// Post transactions to MongoDB
+// let postTransactions = function () {
+
+// }
 
 // If error, print error
 
