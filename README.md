@@ -1,15 +1,15 @@
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-# Fitness Tracker
+# Budget Tracker
 
 Repo: https://github.com/zehrl/budget-tracker
 
-Live App: XXXXX
+Live App: https://ljz-budget-tracker.herokuapp.com/
 
 ---
 
-## Table of Contents (Optional)
+## Table of Contents
 * [Description](#Description)
 * [Instructions](#Instructions)
 * [Questions](#Questions)
@@ -19,29 +19,18 @@ Live App: XXXXX
 
 ## Description
 
-The Budget Tracker is a web application that allows the user to track budget transactions. The user can then visually see a list of previous transactions and a visually representation on a graph. This application features offline support. This means if the user were to lose their internet, the transactions would be saved using IndexDB and then later uploaded to the Mongo database when internet is restored.
+The Budget Tracker is a web application that allows the user to track budget transactions. The user can then visually see a list of previous transactions and a visually representation on a graph. This application features offline support. This means, if the user were to lose their internet, the transactions would be saved using IndexDB and then later uploaded to the Mongo database when internet is restored.
 
 ---
 
 ## Instructions
 
-1. Begin by clicking on the "New Workout" button
+1. Begin by entering a transaction name and transaction amount.
+2. Click on the "Add Funds" or "Subtract Funds," depending on the transaction.
+3. Your new transaction will show in the transaction tables and on the budget graph when submitted.
+4. Lastly, the total amount remaining will update at the top.
 
-![Picture of the homepage](readmeImages/homepage.png)
-
-2. You'll be taken to the "Add Your Exercise" page
-
-3. Select from the drop down menu which type of exercise you would like to add
-4. Enter name, weight, sets, reps and duration
-5. Click "Complete" if you are down or "Add Exercise" if you would like to add another exercise to your workout
-
-![Picture of the add exercise page](readmeImages/add-exercise.png)
-
-6. Click on the "Dashboard" link in the header to proceed to the stats page
-
-7. Here you can view metrics from previous workouts and exercises.
-
-![Picture of the stats page that shows a series of informational graphs](readmeImages/stats.png)
+![Picture of budget tracker](readmeImages/budget-tracker.png)
 
 ---
 
