@@ -5,7 +5,6 @@ const request = indexedDB.open('budgetIDDB', 1);
 // Create new object store if needed
 request.onupgradeneeded = function (event) {
     db = event.target.result;
-    console.log("onupgradeneeded db: ", db);
     db.createObjectStore("pending", { autoIncrement: true });
 }
 // Check if browser is online initially
@@ -15,8 +14,12 @@ request.onsuccess = function (event) {
     // if online, check budgetIDDB for records
     if (navigator.onLine) {
         checkIDDB();
-        console.log("request.onsuccess => navigator.onLine: ", navigator.onLine)
     }
+}
+
+// If error, print error
+request.onerror = function (error) {
+    console.log("IDDB request failed. Error: ", error);
 }
 
 // Check IndexedDB for records
@@ -27,12 +30,8 @@ let checkIDDB = function () {
     const store = transaction.objectStore("pending");
     const allTransactions = store.getAll();
 
-    console.log("checkIDDB => transaction: ", transaction)
-    console.log("checkIDDB => store: ", store)
-
     // Wait until transaction request is complete
     allTransactions.onsuccess = function () {
-        console.log("checkIDDB => allTransactions: ", allTransactions)
 
         // If there are records, post to budget MongoDB
         if (allTransactions.result.length) { postTransactions(allTransactions.result) }
@@ -42,7 +41,6 @@ let checkIDDB = function () {
 
 // Post transactions to MongoDB
 let postTransactions = function (transactions) {
-    console.log("postTransactions called...", transactions)
     fetch("/api/transaction/bulk", {
         method: "POST",
         body: JSON.stringify(transactions),
@@ -51,20 +49,26 @@ let postTransactions = function (transactions) {
             "Content-Type": "application/json"
         }
     })
-    .then(response => {
-        response.json();
-        console.log("Offline records successfully saved.")
-    })
+        // Log success message
+        .then(response => {
+            response.json();
+            console.log("Offline records successfully saved.");
+        })
+        // Delete IDDB pending store records
+        .then(deleteRecords)
 }
 
-// If error, print error
-request.onerror = function(error) {
-    console.log("IDDB request failed. Error: ", error);
+
+// Delete all records in budget IndexedDB
+function deleteRecords() {
+    // Create a transaction, access the pending store and add record to IDDB
+    const transaction = db.transaction("pending", "readwrite");
+    const store = transaction.objectStore("pending");
+    store.clear();
 }
 
 // Save record in budget IndexedDB
 function saveRecord(record) {
-    console.log("saveRecord called...");
 
     // Create a transaction, access the pending store and add record to IDDB
     const transaction = db.transaction("pending", "readwrite");
@@ -74,4 +78,4 @@ function saveRecord(record) {
 }
 
 // listen for when browser comes online
-// window.addEventListener("online", checkDatabase);
+window.addEventListener("online", checkIDDB);
