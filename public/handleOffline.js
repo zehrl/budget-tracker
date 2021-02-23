@@ -35,15 +35,27 @@ let checkIDDB = function () {
         console.log("checkIDDB => allTransactions: ", allTransactions)
 
         // If there are records, post to budget MongoDB
-
+        if (allTransactions.result.length) { postTransactions(allTransactions.result) }
 
     }
 }
 
 // Post transactions to MongoDB
-// let postTransactions = function () {
-
-// }
+let postTransactions = function (transactions) {
+    console.log("postTransactions called...", transactions)
+    fetch("/api/transaction/bulk", {
+        method: "POST",
+        body: JSON.stringify(transactions),
+        headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => {
+        response.json();
+        console.log("Offline records successfully saved.")
+    })
+}
 
 // If error, print error
 
