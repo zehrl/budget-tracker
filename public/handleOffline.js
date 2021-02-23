@@ -58,6 +58,9 @@ let postTransactions = function (transactions) {
 }
 
 // If error, print error
+request.onerror = function(error) {
+    console.log("IDDB request failed. Error: ", error);
+}
 
 // Save record in budget IndexedDB
 function saveRecord(record) {
